@@ -57,7 +57,8 @@ const routes: Routes = [
     MatToolbarModule,
     AuthModule.forRoot(),
     StoreModule.forRoot(reducers),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }) // sudo in-memory database
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }), // sudo in-memory database
+    EffectsModule.forRoot([])
   ],
   bootstrap: [AppComponent],
 
