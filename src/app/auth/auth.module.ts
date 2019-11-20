@@ -10,6 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import {AuthService} from './auth.service';
 import { EffectsModule } from '@ngrx/effects';
 import * as fromAuth from './reducers';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
     imports: [
@@ -24,14 +25,16 @@ import * as fromAuth from './reducers';
 
     ],
     declarations: [LoginComponent],
-    exports: [LoginComponent]
+    exports: [LoginComponent],
+
 })
 export class AuthModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: AuthModule,
             providers: [
-              AuthService
+              AuthService,
+              AuthGuard
             ]
         };
     }

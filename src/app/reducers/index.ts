@@ -11,6 +11,10 @@ export interface State {
 
 }
 
+export interface AppState {
+
+}
+
 export const reducers: ActionReducerMap<State> = {
 
 };

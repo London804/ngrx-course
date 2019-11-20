@@ -2,7 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 import {map} from 'rxjs/operators';
+import { AppState } from './reducers';
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import { isLoggedIn, isLoggedout } from './auth/auth.selectors';
+import { logout } from './auth/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -13,34 +16,61 @@ export class AppComponent implements OnInit {
 
     loading = true;
 
-    constructor(private router: Router) {
+    isLoggedIn$: Observable<boolean>;
+
+    isLoggedOut$: Observable<boolean>;
+
+    constructor(
+        private router: Router,
+        private store: Store<AppState>
+    ) {
 
     }
 
     ngOnInit() {
 
-      this.router.events.subscribe(event  => {
-        switch (true) {
-          case event instanceof NavigationStart: {
-            this.loading = true;
-            break;
-          }
+        this.router.events.subscribe(event  => {
+            switch (true) {
+                case event instanceof NavigationStart: {
+                this.loading = true;
+                break;
+                }
 
-          case event instanceof NavigationEnd:
-          case event instanceof NavigationCancel:
-          case event instanceof NavigationError: {
-            this.loading = false;
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-      });
+                case event instanceof NavigationEnd:
+                case event instanceof NavigationCancel:
+                case event instanceof NavigationError: {
+                this.loading = false;
+                break;
+                }
+                default: {
+                break;
+                }
+            }
+        });
+
+        this.store.subscribe(state => console.log('store value:', state));
+
+        this.isLoggedIn$ = this.store
+            .pipe(
+
+                 // select operator works like map except it removes duplicate values
+                select(isLoggedIn)
+
+                // old version without memoization
+                // select(state => !!state["auth"].user)
+
+            );
+
+        this.isLoggedOut$ = this.store
+            .pipe(
+                select(isLoggedout)
+            )
+
 
     }
 
     logout() {
+        this.store.dispatch(logout());
 
     }
 
