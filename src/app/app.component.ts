@@ -7,6 +7,7 @@ import {AppState} from './reducers';
 import {isLoggedIn, isLoggedOut} from './auth/auth.selectors';
 import {login, logout} from './auth/auth.actions';
 
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -20,24 +21,28 @@ export class AppComponent implements OnInit {
 
     isLoggedOut$: Observable<boolean>;
 
-    constructor(private router: Router,
-                private store: Store<AppState>) {
+
+    constructor(
+        private router: Router,
+        private store: Store<AppState>
+    ) {
 
     }
 
     ngOnInit() {
 
-        const userProfile = localStorage.getItem("user");
 
-        if (userProfile) {
-            this.store.dispatch(login({user: JSON.parse(userProfile)}));
+        const userProfile = localStorage.getItem('user');
+
+        if (userProfile) { // this keeps the user logged in
+            this.store.dispatch(login({ user: JSON.parse(userProfile) }));
         }
 
-        this.router.events.subscribe(event => {
+        this.router.events.subscribe(event  => {
             switch (true) {
                 case event instanceof NavigationStart: {
-                    this.loading = true;
-                    break;
+                this.loading = true;
+                break;
                 }
 
                 case event instanceof NavigationEnd:
@@ -48,13 +53,22 @@ export class AppComponent implements OnInit {
                 }
                 default: {
                     break;
+
                 }
             }
         });
 
+
+        this.store.subscribe(state => console.log('store value:', state));
+
         this.isLoggedIn$ = this.store
             .pipe(
+
+                 // select operator works like map except it removes duplicate values
                 select(isLoggedIn)
+
+                // old version without memoization
+                // select(state => !!state["auth"].user)
             );
 
         this.isLoggedOut$ = this.store
@@ -62,9 +76,11 @@ export class AppComponent implements OnInit {
                 select(isLoggedOut)
             );
 
+
     }
 
     logout() {
+        this.store.dispatch(logout());
 
         this.store.dispatch(logout());
 

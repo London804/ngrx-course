@@ -35,8 +35,8 @@ const routes: Routes = [
         path: '**',
         redirectTo: '/'
     }
-];
 
+];
 
 @NgModule({
     declarations: [
@@ -63,7 +63,7 @@ const routes: Routes = [
                 strictStateSerializability:true
             }
         }),
-        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+      StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }), // sudo in-memory database
         EffectsModule.forRoot([]),
         EntityDataModule.forRoot({}),
         StoreRouterConnectingModule.forRoot({

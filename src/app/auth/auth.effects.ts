@@ -13,11 +13,12 @@ export class AuthEffects {
             .pipe(
                 ofType(AuthActions.login),
                 tap(action => localStorage.setItem('user',
-                        JSON.stringify(action.user))
+                    JSON.stringify(action.user))
                 )
             )
     ,
     {dispatch: false});
+
 
     logout$ = createEffect(() =>
         this.actions$
@@ -29,7 +30,6 @@ export class AuthEffects {
                 })
             )
     , {dispatch: false});
-
 
     constructor(private actions$: Actions,
                 private router: Router) {
