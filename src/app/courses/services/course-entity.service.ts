@@ -4,6 +4,7 @@ import {Course} from '../model/course';
 
 
 @Injectable()
+// fake service that lets you use ngrxData
 export class CourseEntityService
     extends EntityCollectionServiceBase<Course> {
 

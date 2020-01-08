@@ -19,11 +19,11 @@ export class CoursesResolver implements Resolve<boolean> {
             .pipe(
                 tap(loaded => {
                     if (!loaded) {
-                       this.coursesService.getAll();
+                       this.coursesService.getAll(); // get us a list of courses available
                     }
                 }),
                 filter(loaded => !!loaded),
-                first()
+                first() // Emit the first value
             );
 
     }

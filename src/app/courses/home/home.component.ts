@@ -34,7 +34,10 @@ export class HomeComponent implements OnInit {
 
   reload() {
 
-    this.beginnerCourses$ = this.coursesService.entities$
+   // ** Observable of all entities in the cached collection. */
+   //  entities$: Observable<T[]> | Store<T[]>;
+
+    this.beginnerCourses$ = this.coursesService.entities$ 
       .pipe(
         map(courses => courses.filter(course => course.category == 'BEGINNER'))
       );
